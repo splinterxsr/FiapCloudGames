@@ -2,7 +2,7 @@
 
 namespace FiapCloudGames.Domain.Repositories
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioRepository : IRepository<Usuario>
     {
         /// <summary>
         /// Obter usuário por e-mail.

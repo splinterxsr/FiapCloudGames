@@ -12,6 +12,7 @@ namespace FiapCloudGames.Infra.CrossCutting.IoC
             services.AddScoped<MySqlContext>();
 
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
+            services.AddTransient<IJogoRepository, JogoRepository>();
 
             return services;
         }

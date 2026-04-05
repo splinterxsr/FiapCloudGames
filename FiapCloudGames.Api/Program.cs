@@ -1,3 +1,4 @@
+using FiapCloudGames.Api.Profiles;
 using FiapCloudGames.Infra.CrossCutting.IoC;
 using FiapCloudGames.Infra.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,8 @@ builder.Services.AddDbContext<MySqlContext>(options =>
 {
     options.UseMySql(builder.Configuration.GetConnectionString(nameof(Database.MySql)), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString(nameof(Database.MySql))));
 }, ServiceLifetime.Scoped);
+
+builder.Services.AddSingleton<Mapper>();
 
 builder.Services.AddDependencies();
 

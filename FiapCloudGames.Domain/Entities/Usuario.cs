@@ -18,9 +18,25 @@
             PerfilId = perfilId;
         }
 
+        public Usuario(string nome, string email, string senha, int perfilId)
+        {
+            Nome = nome;
+            Email = email;
+            Senha = senha;
+            PerfilId = perfilId;
+        }
+
         public string Email { get; private set; } = null!;
         public string Senha { get; private set; } = null!;
         public int PerfilId { get; private set; }
         public Perfil? Perfil { get; private set; }
+
+        public void Atualizar(string nome, string email, string senha, int perfilId)
+        {
+            Nome = nome;
+            Email = email;
+            Senha = senha;
+            PerfilId = perfilId;
+        }
     }
 }
