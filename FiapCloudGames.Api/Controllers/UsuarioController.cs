@@ -1,7 +1,7 @@
 ﻿using FiapCloudGames.Api.Models;
 using FiapCloudGames.Api.Profiles;
-using FiapCloudGames.Domain.Entities;
 using FiapCloudGames.Domain.Repositories;
+using FiapCloudGames.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FiapCloudGames.Api.Controllers
@@ -12,52 +12,65 @@ namespace FiapCloudGames.Api.Controllers
     {
 
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly ISenhaService _senhaService;
         private readonly Mapper _mapper;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository, Mapper mapper)
+        public UsuarioController(IUsuarioRepository usuarioRepository, ISenhaService senhaService, Mapper mapper)
         {
             _usuarioRepository = usuarioRepository;
+            _senhaService = senhaService;
             _mapper = mapper;
         }
 
         [HttpGet("ObterTodos")]
-        public IActionResult Obter()
+        [ProducesResponseType(typeof(IEnumerable<UsuarioViewModel>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Obter()
         {
-            var usuarios = _usuarioRepository.ObterAsync().Result;
+            var usuarios = await _usuarioRepository.ObterAsync();
 
-            var viewModel = _mapper.Map<IEnumerable<Usuario>, IEnumerable<UsuarioViewModel>>(usuarios);
+            var viewModel = _mapper.Map(usuarios);
 
             return Ok(viewModel);
         }
 
         [HttpGet("ObterPorId/{id}")]
-        public IActionResult Obter(int id)
+        [ProducesResponseType(typeof(UsuarioViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Obter([FromRoute] int id)
         {
-            var usuario = _usuarioRepository.ObterAsync(id).Result;
+            var usuario = await _usuarioRepository.ObterAsync(id);
 
             if (usuario == null) return NotFound();
 
-            var viewModel = _mapper.Map<Usuario, UsuarioViewModel>(usuario);
+            var viewModel = _mapper.Map(usuario);
 
             return Ok(viewModel);
         }
 
         [HttpGet("ObterPorEmail/{email}")]
-        public IActionResult Obter(string email)
+        [ProducesResponseType(typeof(UsuarioViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Obter([FromRoute] string email)
         {
-            var usuario = _usuarioRepository.ObterAsync(email).Result;
+            var usuario = await _usuarioRepository.ObterAsync(email);
 
             if (usuario == null) return NotFound();
 
-            var viewModel = _mapper.Map<Usuario, UsuarioViewModel>(usuario);
+            var viewModel = _mapper.Map(usuario);
 
             return Ok(viewModel);
         }
 
         [HttpPost("Adicionar")]
-        public async Task<IActionResult> Adicionar(UsuarioViewModel model)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Adicionar([FromBody] UsuarioViewModel model)
         {
-            var usuario = _mapper.Map<UsuarioViewModel, Usuario>(model);
+            var hashSenha = _senhaService.CriaHash(model.Senha);
+
+            model.Senha = hashSenha;
+
+            var usuario = _mapper.Map(model);
 
             await _usuarioRepository.AdicionarAsync(usuario);
 
@@ -65,13 +78,18 @@ namespace FiapCloudGames.Api.Controllers
         }
 
         [HttpPost("Editar")]
-        public async Task<IActionResult> Editar(UsuarioUpdateViewModel model)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Editar([FromBody] UsuarioUpdateViewModel model)
         {
-            var usuario = _usuarioRepository.ObterAsync(model.Id).Result;
+            var usuario = await _usuarioRepository.ObterAsync(model.Id);
 
             if (usuario == null) return NotFound();
 
-            usuario.Atualizar(model.Nome, model.Email, model.Senha, model.PerfilId);
+            var senhaHash = model.Senha is null ? null : _senhaService.CriaHash(model.Senha);
+
+            usuario.Atualizar(model.Nome, model.Email, senhaHash, model.PerfilId);
 
             await _usuarioRepository.EditarAsync(usuario);
 
@@ -79,8 +97,14 @@ namespace FiapCloudGames.Api.Controllers
         }
 
         [HttpPost("Inativar/{id}")]
-        public async Task<IActionResult> Inativar(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Inativar([FromRoute] int id)
         {
+            var usuario = await _usuarioRepository.ObterAsync(id);
+
+            if (usuario == null) return NotFound();
+
             await _usuarioRepository.InativarAsync(id);
 
             return Ok();

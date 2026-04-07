@@ -36,7 +36,7 @@ namespace FiapCloudGames.Infra.Data.Mappings
             builder
                 .Property(u => u.Senha)
                 .HasColumnName("usuario_senha")
-                .HasColumnType("varchar(15)")
+                .HasColumnType("varchar(255)")
                 .IsRequired();
 
             builder

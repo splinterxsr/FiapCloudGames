@@ -1,6 +1,5 @@
 ﻿using FiapCloudGames.Api.Models;
 using FiapCloudGames.Api.Profiles;
-using FiapCloudGames.Domain.Entities;
 using FiapCloudGames.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,31 +19,36 @@ namespace FiapCloudGames.Api.Controllers
         }
 
         [HttpGet("ObterTodos")]
-        public IActionResult Obter()
+        [ProducesResponseType(typeof(IEnumerable<JogoViewModel>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Obter()
         {
-            var jogos = _jogoRepository.ObterAsync().Result;
+            var jogos = await _jogoRepository.ObterAsync();
 
-            var viewModel = _mapper.Map<IEnumerable<Jogo>, IEnumerable<JogoViewModel>>(jogos);
+            var viewModel = _mapper.Map(jogos);
 
             return Ok(viewModel);
         }
 
         [HttpGet("ObterPorId/{id}")]
-        public IActionResult Obter(int id)
+        [ProducesResponseType(typeof(JogoViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Obter(int id)
         {
-            var jogo = _jogoRepository.ObterAsync(id).Result;
+            var jogo = await _jogoRepository.ObterAsync(id);
 
             if (jogo == null) return NotFound();
 
-            var viewModel = _mapper.Map<Jogo, JogoViewModel>(jogo);
+            var viewModel = _mapper.Map(jogo);
 
             return Ok(viewModel);
         }
 
         [HttpPost("Adicionar")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Adicionar(JogoViewModel model)
         {
-            var jogo = _mapper.Map<JogoViewModel, Jogo>(model);
+            var jogo = _mapper.Map(model);
 
             await _jogoRepository.AdicionarAsync(jogo);
 
@@ -52,9 +56,12 @@ namespace FiapCloudGames.Api.Controllers
         }
 
         [HttpPost("Editar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Editar(JogoUpdateViewModel model)
         {
-            var jogo = _jogoRepository.ObterAsync(model.Id).Result;
+            var jogo = await _jogoRepository.ObterAsync(model.Id);
 
             if (jogo == null) return NotFound();
 
@@ -66,12 +73,17 @@ namespace FiapCloudGames.Api.Controllers
         }
 
         [HttpPost("Inativar/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Inativar(int id)
         {
+            var jogo = await _jogoRepository.ObterAsync(id);
+
+            if (jogo == null) return NotFound();
+
             await _jogoRepository.InativarAsync(id);
 
             return Ok();
         }
-
     }
 }

@@ -31,12 +31,12 @@
         public int PerfilId { get; private set; }
         public Perfil? Perfil { get; private set; }
 
-        public void Atualizar(string nome, string email, string senha, int perfilId)
+        public void Atualizar(string? nome, string? email, string? senhaHash, int? perfilId)
         {
-            Nome = nome;
-            Email = email;
-            Senha = senha;
-            PerfilId = perfilId;
+            if (!string.IsNullOrWhiteSpace(nome)) Nome = nome;
+            if (!string.IsNullOrWhiteSpace(email)) Email = email;
+            if (!string.IsNullOrWhiteSpace(senhaHash)) Senha = senhaHash;
+            if (perfilId.HasValue) PerfilId = perfilId.Value;
         }
     }
 }
