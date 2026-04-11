@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FiapCloudGames.Domain\FiapCloudGames.Domain.csproj" />
+    <ProjectReference Include="..\FiapCloudGames.Infra.Data\FiapCloudGames.Infra.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 

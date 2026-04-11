@@ -1,6 +1,6 @@
 ﻿namespace FiapCloudGames.Domain.Entities
 {
-    public abstract class EntityBase
+    public abstract class BaseEntity
     {
         public int Id { get; protected set; }
         public string Nome { get; protected set; } = null!;

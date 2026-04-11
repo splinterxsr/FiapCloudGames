@@ -1,4 +1,5 @@
 ﻿using FiapCloudGames.Domain.Entities;
+using FiapCloudGames.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -6,6 +7,13 @@ namespace FiapCloudGames.Infra.Data.Mappings
 {
     public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
     {
+        private readonly ISenhaService _senhaService;
+
+        public UsuarioConfiguration(ISenhaService senhaService)
+        {
+            _senhaService = senhaService;
+        }
+
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder
@@ -65,7 +73,7 @@ namespace FiapCloudGames.Infra.Data.Mappings
                 .HasForeignKey(u => u.PerfilId);
 
             builder
-                .HasData(new Usuario(1, "Admin", "admin@fiapcloud.com.br", "admin", 1));
+                .HasData(new Usuario(1, "Admin", "admin@fiapcloud.com.br", _senhaService.CriaHash("admin"), 1));
         }
     }
 }

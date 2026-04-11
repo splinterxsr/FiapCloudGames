@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FiapCloudGames.Infra.Data.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : EntityBase
+    public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly MySqlContext _context;
         protected readonly DbSet<T> _dbSet;

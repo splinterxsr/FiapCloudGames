@@ -2,7 +2,7 @@
 
 namespace FiapCloudGames.Domain.Repositories
 {
-    public interface IRepository<T> where T : EntityBase
+    public interface IRepository<T> where T : BaseEntity
     {
         Task<T?> ObterAsync(int id, CancellationToken cancellationToken = default);
         Task<IEnumerable<T>> ObterAsync(CancellationToken cancellationToken = default);

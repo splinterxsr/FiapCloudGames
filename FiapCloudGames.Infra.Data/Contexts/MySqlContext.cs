@@ -1,4 +1,5 @@
 ﻿using FiapCloudGames.Domain.Entities;
+using FiapCloudGames.Domain.Services;
 using FiapCloudGames.Infra.Data.Mappings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,10 +8,12 @@ namespace FiapCloudGames.Infra.Data.Contexts
 {
     public class MySqlContext : DbContext
     {
+        private readonly ISenhaService _senhaService;
         private readonly IConfiguration _configuration;
 
-        public MySqlContext(IConfiguration configuration, DbContextOptions<MySqlContext> options) : base(options)
+        public MySqlContext(ISenhaService senhaService, IConfiguration configuration, DbContextOptions<MySqlContext> options) : base(options)
         {
+            _senhaService = senhaService;
             _configuration = configuration;
         }
 
@@ -32,7 +35,7 @@ namespace FiapCloudGames.Infra.Data.Contexts
         {
             modelBuilder.ApplyConfiguration(new JogoConfiguration());
             modelBuilder.ApplyConfiguration(new PerfilConfiguration());
-            modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
+            modelBuilder.ApplyConfiguration(new UsuarioConfiguration(_senhaService));
         }
     }
 }

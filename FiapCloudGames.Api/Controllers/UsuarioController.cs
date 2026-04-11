@@ -24,9 +24,9 @@ namespace FiapCloudGames.Api.Controllers
 
         [HttpGet("ObterTodos")]
         [ProducesResponseType(typeof(IEnumerable<UsuarioViewModel>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Obter()
+        public async Task<IActionResult> Obter(CancellationToken cancellationToken)
         {
-            var usuarios = await _usuarioRepository.ObterAsync();
+            var usuarios = await _usuarioRepository.ObterAsync(cancellationToken);
 
             var viewModel = _mapper.Map(usuarios);
 
@@ -36,9 +36,9 @@ namespace FiapCloudGames.Api.Controllers
         [HttpGet("ObterPorId/{id}")]
         [ProducesResponseType(typeof(UsuarioViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Obter([FromRoute] int id)
+        public async Task<IActionResult> Obter([FromRoute] int id, CancellationToken cancellationToken)
         {
-            var usuario = await _usuarioRepository.ObterAsync(id);
+            var usuario = await _usuarioRepository.ObterAsync(id, cancellationToken);
 
             if (usuario == null) return NotFound();
 
@@ -50,9 +50,9 @@ namespace FiapCloudGames.Api.Controllers
         [HttpGet("ObterPorEmail/{email}")]
         [ProducesResponseType(typeof(UsuarioViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Obter([FromRoute] string email)
+        public async Task<IActionResult> Obter([FromRoute] string email, CancellationToken cancellationToken)
         {
-            var usuario = await _usuarioRepository.ObterAsync(email);
+            var usuario = await _usuarioRepository.ObterAsync(email, cancellationToken);
 
             if (usuario == null) return NotFound();
 
@@ -64,7 +64,7 @@ namespace FiapCloudGames.Api.Controllers
         [HttpPost("Adicionar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Adicionar([FromBody] UsuarioViewModel model)
+        public async Task<IActionResult> Adicionar([FromBody] UsuarioViewModel model, CancellationToken cancellationToken)
         {
             var hashSenha = _senhaService.CriaHash(model.Senha);
 
@@ -72,7 +72,7 @@ namespace FiapCloudGames.Api.Controllers
 
             var usuario = _mapper.Map(model);
 
-            await _usuarioRepository.AdicionarAsync(usuario);
+            await _usuarioRepository.AdicionarAsync(usuario, cancellationToken);
 
             return Created();
         }
@@ -81,9 +81,9 @@ namespace FiapCloudGames.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Editar([FromBody] UsuarioUpdateViewModel model)
+        public async Task<IActionResult> Editar([FromBody] UsuarioUpdateViewModel model, CancellationToken cancellationToken)
         {
-            var usuario = await _usuarioRepository.ObterAsync(model.Id);
+            var usuario = await _usuarioRepository.ObterAsync(model.Id, cancellationToken);
 
             if (usuario == null) return NotFound();
 
@@ -91,7 +91,7 @@ namespace FiapCloudGames.Api.Controllers
 
             usuario.Atualizar(model.Nome, model.Email, senhaHash, model.PerfilId);
 
-            await _usuarioRepository.EditarAsync(usuario);
+            await _usuarioRepository.EditarAsync(usuario, cancellationToken);
 
             return Ok();
         }
@@ -99,13 +99,13 @@ namespace FiapCloudGames.Api.Controllers
         [HttpPost("Inativar/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Inativar([FromRoute] int id)
+        public async Task<IActionResult> Inativar([FromRoute] int id, CancellationToken cancellationToken)
         {
-            var usuario = await _usuarioRepository.ObterAsync(id);
+            var usuario = await _usuarioRepository.ObterAsync(id, cancellationToken);
 
             if (usuario == null) return NotFound();
 
-            await _usuarioRepository.InativarAsync(id);
+            await _usuarioRepository.InativarAsync(id, cancellationToken);
 
             return Ok();
         }

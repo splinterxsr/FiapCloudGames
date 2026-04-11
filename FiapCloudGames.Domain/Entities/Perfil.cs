@@ -1,6 +1,6 @@
 ﻿namespace FiapCloudGames.Domain.Entities
 {
-    public class Perfil : EntityBase
+    public class Perfil : BaseEntity
     {
         /// <summary>
         /// Construtor usado pelo Entity Framework Core. Não deve ser usado diretamente.

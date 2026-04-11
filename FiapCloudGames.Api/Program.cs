@@ -4,7 +4,9 @@ using FiapCloudGames.Infra.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,35 @@ builder.Services.AddSingleton<Mapper>();
 
 builder.Services.AddDependencies();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Authentication configuration (JWT)
+var jwtSection = builder.Configuration.GetSection("Jwt");
+var jwtKey = jwtSection.GetValue<string>("Key") ?? throw new InvalidOperationException("Jwt:Key não configurado");
+var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
+
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSection.GetValue<string>("Issuer"),
+            ValidAudience = jwtSection.GetValue<string>("Audience"),
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+// Swagger with JWT support
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -29,6 +59,23 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "API - Fiap Cloud Games"
+    });
+
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Insira 'Bearer {token}'",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+    };
+
+    options.AddSecurityDefinition("Bearer", securityScheme);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { securityScheme, new string[] { } }
     });
 });
 
@@ -52,8 +99,9 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers().RequireAuthorization();
 
 app.Run();
