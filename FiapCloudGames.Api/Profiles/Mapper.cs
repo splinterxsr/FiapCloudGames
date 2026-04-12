@@ -7,24 +7,20 @@ namespace FiapCloudGames.Api.Profiles
     [Mapper]
     public partial class Mapper
     {
-        [MapperIgnoreSource(nameof(Usuario.Perfil))]
+        [MapperIgnoreSource(nameof(Usuario.PerfilId))]
         [MapperIgnoreSource(nameof(Usuario.Situacao))]
-        [MapperIgnoreSource(nameof(Usuario.Id))]
-        [MapperIgnoreSource(nameof(Usuario.DataHora))]
-        public partial UsuarioViewModel Map(Usuario source);
-        public partial IEnumerable<UsuarioViewModel> Map(IEnumerable<Usuario> source);
+        public partial UsuarioResponse Map(Usuario source);
 
-        public partial Usuario Map(UsuarioViewModel source);
-        public partial Usuario Map(UsuarioUpdateViewModel source);
+        public partial Usuario Map(UsuarioInsertRequest source);
+        public partial Usuario Map(UsuarioUpdateRequest source);
 
         [MapperIgnoreSource(nameof(Jogo.Situacao))]
-        [MapperIgnoreSource(nameof(Jogo.Id))]
-        [MapperIgnoreSource(nameof(Jogo.DataHora))]
-        public partial JogoViewModel Map(Jogo source);
-        public partial IEnumerable<JogoViewModel> Map(IEnumerable<Jogo> source);
+        public partial JogoResponse Map(Jogo source);
 
-        public partial Jogo Map(JogoViewModel source);
+        public partial Jogo Map(JogoInsertRequest source);
+        public partial Jogo Map(JogoUpdateRequest source);
 
-        public partial Jogo Map(JogoUpdateViewModel source);
+        public partial IEnumerable<UsuarioResponse> Map(IEnumerable<Usuario> source);
+        public partial IEnumerable<JogoResponse> Map(IEnumerable<Jogo> source);
     }
 }

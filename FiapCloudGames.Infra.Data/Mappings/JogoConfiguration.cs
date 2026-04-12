@@ -24,7 +24,7 @@ namespace FiapCloudGames.Infra.Data.Mappings
             builder
                 .Property(j => j.Nome)
                 .HasColumnName("jogo_nome")
-                .HasColumnType("varchar(20)")
+                .HasColumnType("varchar(200)")
                 .IsRequired();
 
             builder

@@ -2,7 +2,7 @@
 
 namespace FiapCloudGames.Api.Models
 {
-    public class UsuarioUpdateViewModel
+    public class UsuarioUpdateRequest
     {
         [Required(ErrorMessage = "É obrigatório informar o ID do usuário.")]
         public int Id { get; set; }

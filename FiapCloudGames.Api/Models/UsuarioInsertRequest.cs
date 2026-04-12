@@ -2,7 +2,7 @@
 
 namespace FiapCloudGames.Api.Models
 {
-    public class UsuarioViewModel
+    public class UsuarioInsertRequest
     {
         [Required(ErrorMessage = "Insira o nome do usuário.")]
         public string Nome { get; set; } = null!;

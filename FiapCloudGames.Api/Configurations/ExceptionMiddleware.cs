@@ -23,12 +23,13 @@
 
     private Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        _logger.LogError(exception, "Ocorreu um erro não esperado na rota {Path}", context.Request.Path);
+        _logger.LogError(exception, $"Ocorreu um erro inesperado na rota {context.Request.Path}");
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-        return context.Response.WriteAsJsonAsync(new {
+        return context.Response.WriteAsJsonAsync(new
+        {
             context.Response.StatusCode,
             Mensagem = "Ocorreu um erro interno no servidor.",
             Exception = exception.Message

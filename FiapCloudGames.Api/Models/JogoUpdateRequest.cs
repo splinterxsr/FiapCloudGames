@@ -2,8 +2,11 @@
 
 namespace FiapCloudGames.Api.Models
 {
-    public class JogoViewModel
+    public class JogoUpdateRequest
     {
+        [Required(ErrorMessage = "É obrigatório informar o ID do jogo.")]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Insira o nome do jogo.")]
         public string Nome { get; set; } = null!;
     }

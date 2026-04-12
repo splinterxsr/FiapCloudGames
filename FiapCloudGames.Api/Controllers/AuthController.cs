@@ -33,13 +33,29 @@ namespace FiapCloudGames.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Iniciando processo de autenticação.");
+
+            _logger.LogInformation($"Validando as credenciais do usuário '{request.Email}'.");
+
             var usuario = await _usuarioRepository.ObterAsync(request.Email, cancellationToken);
 
-            if (usuario == null) return Unauthorized();
+            if (usuario == null)
+            {
+                _logger.LogInformation("Credenciais inválidas! Usuário ou senha incorretos.");
+                return Unauthorized();
+            }
 
             var senhaValida = _senhaService.ValidaSenha(request.Senha, usuario.Senha);
 
-            if (!senhaValida) return Unauthorized();
+            if (!senhaValida)
+            {
+                _logger.LogInformation("Credenciais inválidas! Usuário ou senha incorretos..");
+                return Unauthorized();
+            }
+
+            _logger.LogInformation("Credenciais validadas com sucesso.");
+
+            _logger.LogInformation($"Criando token JWT para o usuário '{request.Email}'.");
 
             var jwtSection = _configuration.GetSection("Jwt");
             var key = jwtSection.GetValue<string>("Key");
@@ -66,6 +82,10 @@ namespace FiapCloudGames.Api.Controllers
             );
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            _logger.LogInformation("Token JWT criado com sucesso.");
+
+            _logger.LogInformation("Usuário autenticado com sucesso.");
 
             return Ok(new LoginResponse { Token = tokenString, Expires = DateTime.UtcNow.AddMinutes(expiresMinutes) });
         }

@@ -14,27 +14,29 @@ namespace FiapCloudGames.Api.Controllers
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly ISenhaService _senhaService;
         private readonly Mapper _mapper;
+        private readonly ILogger<UsuarioController> _logger;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository, ISenhaService senhaService, Mapper mapper)
+        public UsuarioController(IUsuarioRepository usuarioRepository, ISenhaService senhaService, Mapper mapper, ILogger<UsuarioController> logger)
         {
             _usuarioRepository = usuarioRepository;
             _senhaService = senhaService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet("ObterTodos")]
-        [ProducesResponseType(typeof(IEnumerable<UsuarioViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<UsuarioResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Obter(CancellationToken cancellationToken)
         {
             var usuarios = await _usuarioRepository.ObterAsync(cancellationToken);
 
-            var viewModel = _mapper.Map(usuarios);
+            var response = _mapper.Map(usuarios);
 
-            return Ok(viewModel);
+            return Ok(response);
         }
 
         [HttpGet("ObterPorId/{id}")]
-        [ProducesResponseType(typeof(UsuarioViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Obter([FromRoute] int id, CancellationToken cancellationToken)
         {
@@ -42,13 +44,13 @@ namespace FiapCloudGames.Api.Controllers
 
             if (usuario == null) return NotFound();
 
-            var viewModel = _mapper.Map(usuario);
+            var response = _mapper.Map(usuario);
 
-            return Ok(viewModel);
+            return Ok(response);
         }
 
         [HttpGet("ObterPorEmail/{email}")]
-        [ProducesResponseType(typeof(UsuarioViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Obter([FromRoute] string email, CancellationToken cancellationToken)
         {
@@ -56,23 +58,27 @@ namespace FiapCloudGames.Api.Controllers
 
             if (usuario == null) return NotFound();
 
-            var viewModel = _mapper.Map(usuario);
+            var response = _mapper.Map(usuario);
 
-            return Ok(viewModel);
+            return Ok(response);
         }
 
         [HttpPost("Adicionar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Adicionar([FromBody] UsuarioViewModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Adicionar([FromBody] UsuarioInsertRequest request, CancellationToken cancellationToken)
         {
-            var hashSenha = _senhaService.CriaHash(model.Senha);
+            _logger.LogInformation($"Adicionando novo usuário '{request.Nome}'.");
 
-            model.Senha = hashSenha;
+            var hashSenha = _senhaService.CriaHash(request.Senha);
 
-            var usuario = _mapper.Map(model);
+            request.Senha = hashSenha;
+
+            var usuario = _mapper.Map(request);
 
             await _usuarioRepository.AdicionarAsync(usuario, cancellationToken);
+
+            _logger.LogInformation($"O usuário '{request.Nome}' foi adicionado com sucesso.");
 
             return Created();
         }
@@ -81,17 +87,21 @@ namespace FiapCloudGames.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Editar([FromBody] UsuarioUpdateViewModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Editar([FromBody] UsuarioUpdateRequest request, CancellationToken cancellationToken)
         {
-            var usuario = await _usuarioRepository.ObterAsync(model.Id, cancellationToken);
+            _logger.LogInformation($"Iniciando edição do usuário '{request.Nome}' (ID: {request.Id}).");
+
+            var usuario = await _usuarioRepository.ObterAsync(request.Id, cancellationToken);
 
             if (usuario == null) return NotFound();
 
-            var senhaHash = model.Senha is null ? null : _senhaService.CriaHash(model.Senha);
+            var senhaHash = request.Senha is null ? null : _senhaService.CriaHash(request.Senha);
 
-            usuario.Atualizar(model.Nome, model.Email, senhaHash, model.PerfilId);
+            usuario.Atualizar(request.Nome, request.Email, senhaHash, request.PerfilId);
 
             await _usuarioRepository.EditarAsync(usuario, cancellationToken);
+
+            _logger.LogInformation($"O usuário '{request.Nome}' (ID: {request.Id}) foi editado com sucesso.");
 
             return Ok();
         }
@@ -105,7 +115,11 @@ namespace FiapCloudGames.Api.Controllers
 
             if (usuario == null) return NotFound();
 
+            _logger.LogInformation($"Iniciando inativação do usuário '{usuario.Nome}' (ID: {usuario.Id}).");
+
             await _usuarioRepository.InativarAsync(id, cancellationToken);
+
+            _logger.LogInformation($"O usuário '{usuario.Nome}' (ID: {usuario.Id}) foi inativado com sucesso.");
 
             return Ok();
         }

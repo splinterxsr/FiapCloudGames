@@ -13,6 +13,7 @@ namespace FiapCloudGames.Infra.CrossCutting.IoC
         {
             services.AddScoped<MySqlContext>();
 
+            services.AddTransient<ICorrelationIdService, CorrelationIdService>();
             services.AddTransient<ISenhaService, SenhaService>();
 
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();

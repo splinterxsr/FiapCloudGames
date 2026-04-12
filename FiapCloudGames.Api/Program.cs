@@ -7,6 +7,8 @@ using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FiapCloudGames.Api.Configurations;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,8 +82,13 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File(@"C:\Logs\apiFCG\log-.txt", rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Error()
+    .MinimumLevel.Override(nameof(FiapCloudGames), LogEventLevel.Information)
+    .Enrich.FromLogContext()
+    .WriteTo.File(
+        path: @"C:\Logs\apiFCG\log-.txt",
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {CorrelationId} {Message:lj}{NewLine}{Exception}")
     .CreateLogger();
 
 builder.Host.UseSerilog();
@@ -95,6 +102,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
