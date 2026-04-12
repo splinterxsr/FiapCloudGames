@@ -1,6 +1,6 @@
 ﻿using FiapCloudGames.Infra.Data.Services;
 
-namespace FiapCloudGames.Tests.UnitTests
+namespace FiapCloudGames.Tests.UnitTests.Services
 {
     public class SenhaServiceTests
     {

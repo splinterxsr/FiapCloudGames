@@ -68,6 +68,10 @@ namespace FiapCloudGames.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Adicionar([FromBody] UsuarioInsertRequest request, CancellationToken cancellationToken)
         {
+            var usuarioExiste =_usuarioRepository.ObterAsync(request.Email, cancellationToken);
+
+            if (usuarioExiste != null) return Conflict(new { Mensagem = "O e-mail inserido já está atrelado a outro cadastro."});
+
             _logger.LogInformation($"Adicionando novo usuário '{request.Nome}'.");
 
             var hashSenha = _senhaService.CriaHash(request.Senha);
@@ -94,6 +98,13 @@ namespace FiapCloudGames.Api.Controllers
             var usuario = await _usuarioRepository.ObterAsync(request.Id, cancellationToken);
 
             if (usuario == null) return NotFound();
+
+            if (!string.IsNullOrEmpty(request.Email))
+            {
+                var usuarioEmailExiste = _usuarioRepository.ObterAsync(request.Email, cancellationToken);
+
+                if (usuarioEmailExiste != null && usuarioEmailExiste.Id != request.Id) return Conflict(new { Mensagem = "O e-mail inserido já está atrelado a outro cadastro." });
+            }
 
             var senhaHash = request.Senha is null ? null : _senhaService.CriaHash(request.Senha);
 
