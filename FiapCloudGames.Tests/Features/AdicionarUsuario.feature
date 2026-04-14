@@ -30,4 +30,4 @@ Esquema do Cenário: Erro ao tentar adicionar usuário com dados inválidos
         |       | teste@gmail.com  | Senha@123  | 1        | Insira o nome do usuário.                                                                 |
         | Luigi | email_invalido   | Senha@123  | 1        | O e-mail inserido é inválido.                                                             |
         | Peach | peach@gmail.com  | 123        | 1        | A senha precisa ter no mínimo 8 dígitos, contendo números, letras e caracteres especiais. |
-        | Yoshi | yoshi@gmail.com  | Senha@123  | 0        | Insira o ID do perfil do usuário.                                                         |
+        | Yoshi | yoshi@gmail.com  | Senha@123  | null     | Insira o ID do perfil do usuário.                                                         |

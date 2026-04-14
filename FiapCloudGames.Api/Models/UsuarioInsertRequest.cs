@@ -16,6 +16,6 @@ namespace FiapCloudGames.Api.Models
         public string Senha { get; set; } = null!;
 
         [Required(ErrorMessage = "Insira o ID do perfil do usuário.")]
-        public int PerfilId { get; set; }
+        public int? PerfilId { get; set; }
     }
 }

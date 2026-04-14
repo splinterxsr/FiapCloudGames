@@ -183,7 +183,7 @@ await this.FeatureBackgroundAsync();
         [Xunit.InlineDataAttribute("Luigi", "email_invalido", "Senha@123", "1", "O e-mail inserido é inválido.", new string[0])]
         [Xunit.InlineDataAttribute("Peach", "peach@gmail.com", "123", "1", "A senha precisa ter no mínimo 8 dígitos, contendo números, letras e caracteres es" +
             "peciais.", new string[0])]
-        [Xunit.InlineDataAttribute("Yoshi", "yoshi@gmail.com", "Senha@123", "0", "Insira o ID do perfil do usuário.", new string[0])]
+        [Xunit.InlineDataAttribute("Yoshi", "yoshi@gmail.com", "Senha@123", "null", "Insira o ID do perfil do usuário.", new string[0])]
         public async System.Threading.Tasks.Task ErroAoTentarAdicionarUsuarioComDadosInvalidos(string nome, string email, string senha, string perfilId, string mensagem, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;

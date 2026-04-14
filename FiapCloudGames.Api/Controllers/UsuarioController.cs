@@ -68,7 +68,7 @@ namespace FiapCloudGames.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Adicionar([FromBody] UsuarioInsertRequest request, CancellationToken cancellationToken)
         {
-            var usuarioExiste =_usuarioRepository.ObterAsync(request.Email, cancellationToken);
+            var usuarioExiste = await _usuarioRepository.ObterAsync(request.Email, cancellationToken);
 
             if (usuarioExiste != null) return Conflict(new { Mensagem = "O e-mail inserido já está atrelado a outro cadastro."});
 

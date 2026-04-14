@@ -12,13 +12,11 @@ namespace FiapCloudGames.Tests.Steps.Usuarios
     [Binding]
     public class AdicionarUsuarioStepDefinitions
     {
-        private readonly WebAppFactory<Program> _factory;
         private readonly ScenarioContext _scenarioContext;
         private readonly Mock<IUsuarioRepository> _usuarioRepositoryMock;
 
         public AdicionarUsuarioStepDefinitions(WebAppFactory<Program> factory, ScenarioContext scenarioContext)
         {
-            _factory = factory;
             _scenarioContext = scenarioContext;
             _usuarioRepositoryMock = factory.UsuarioRepositoryMock;
         }
@@ -36,17 +34,13 @@ namespace FiapCloudGames.Tests.Steps.Usuarios
             {
                 Nome = row.ContainsKey("Nome") ? row["Nome"] : string.Empty,
                 Email = email,
-                Senha = row.ContainsKey("Senha") ? row["Senha"] : string.Empty,
-                PerfilId = row.ContainsKey("PerfilId") ? int.Parse(row["PerfilId"]) : 0
+                Senha = row["Senha"],
+                PerfilId = (row["PerfilId"] == "null")? null : int.Parse(row["PerfilId"])
             };
 
             _usuarioRepositoryMock
-                .Setup(x => x.ObterAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Setup(x => x.ObterAsync(It.Is<string>(s => s == email), It.IsAny<CancellationToken>()))
                 .ReturnsAsync((Usuario)null);
-
-            _usuarioRepositoryMock
-                .Setup(x => x.AdicionarAsync(It.IsAny<Usuario>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask);
 
             _scenarioContext["UsuarioRequest"] = request;
         }
@@ -56,7 +50,7 @@ namespace FiapCloudGames.Tests.Steps.Usuarios
         {
             _usuarioRepositoryMock
                 .Setup(x => x.ObterAsync(email, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Usuario  ("Usuário Teste", email, "Senha@123", 1) );
+                .ReturnsAsync(new Usuario("Usuário Teste", email, "Senha@123", 1));
         }
 
         [Given("que eu preencho os dados do novo usuário com o e-mail {string}")]
