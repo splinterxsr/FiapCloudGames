@@ -84,7 +84,7 @@ namespace FiapCloudGames.Api.Controllers
 
             _logger.LogInformation($"O usuário '{request.Nome}' foi adicionado com sucesso.");
 
-            return Created();
+            return Created(string.Empty, usuario);
         }
 
         [HttpPost("Editar")]

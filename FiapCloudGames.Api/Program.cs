@@ -113,3 +113,5 @@ app.UseAuthorization();
 app.MapControllers().RequireAuthorization();
 
 app.Run();
+
+public partial class Program { }

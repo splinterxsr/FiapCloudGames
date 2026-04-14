@@ -58,7 +58,7 @@ namespace FiapCloudGames.Api.Controllers
 
             _logger.LogInformation($"O jogo '{request.Nome}' foi adicionado com sucesso.");
 
-            return Created();
+            return Created(string.Empty, jogo);
         }
 
         [HttpPost("Editar")]
