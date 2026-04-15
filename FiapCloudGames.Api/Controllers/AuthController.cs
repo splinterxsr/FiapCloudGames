@@ -1,93 +1,60 @@
 using FiapCloudGames.Api.Models;
-using FiapCloudGames.Domain.Repositories;
+using FiapCloudGames.Domain.Exceptions;
 using FiapCloudGames.Domain.Services;
-using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Security.Claims;
+using FiapCloudGames.Infra.CrossCutting.Security;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace FiapCloudGames.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
-        private readonly IUsuarioRepository _usuarioRepository;
-        private readonly ISenhaService _senhaService;
-        private readonly IConfiguration _configuration;
+        private readonly UsuarioService _usuarioService;
+        private readonly JwtService _jwtService;
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IUsuarioRepository usuarioRepository, ISenhaService senhaService, IConfiguration configuration, ILogger<AuthController> logger)
+        public AuthController(UsuarioService usuarioService, JwtService jwtService, ILogger<AuthController> logger)
         {
-            _usuarioRepository = usuarioRepository;
-            _senhaService = senhaService;
-            _configuration = configuration;
+            _usuarioService = usuarioService;
+            _jwtService = jwtService;
             _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpPost("Login")]
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Realizar a autenticação e obter token de acesso.")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Iniciando processo de autenticação.");
-
-            _logger.LogInformation($"Validando as credenciais do usuário '{request.Email}'.");
-
-            var usuario = await _usuarioRepository.ObterAsync(request.Email, cancellationToken);
-
-            if (usuario == null)
+            try
             {
-                _logger.LogInformation("Credenciais inválidas! Usuário ou senha incorretos.");
-                return Unauthorized();
+                var usuario = await _usuarioService.Autenticar(request.Email, request.Senha, cancellationToken);
+
+                var token = _jwtService.GerarToken(usuario.Email, usuario.Nome);
+
+                var loginResponse = new LoginResponse { Email = usuario.Email, Token = token };
+
+                _logger.LogInformation($"Usuário {request.Email} com permissão de acesso. Acesso liberado.");
+
+                return Ok(loginResponse);
             }
-
-            var senhaValida = _senhaService.ValidaSenha(request.Senha, usuario.Senha);
-
-            if (!senhaValida)
+            catch (SemAutorizacaoException ex)
             {
-                _logger.LogInformation("Credenciais inválidas! Usuário ou senha incorretos..");
-                return Unauthorized();
+                _logger.LogInformation($"Usuário {request.Email} sem permissão de acesso. Acesso bloqueado. Motivo: {ex.Message}");
+
+                return Unauthorized(new ProblemDetails { Detail = ex.Message });
             }
-
-            _logger.LogInformation("Credenciais validadas com sucesso.");
-
-            _logger.LogInformation($"Criando token JWT para o usuário '{request.Email}'.");
-
-            var jwtSection = _configuration.GetSection("Jwt");
-            var key = jwtSection.GetValue<string>("Key");
-            var issuer = jwtSection.GetValue<string>("Issuer");
-            var audience = jwtSection.GetValue<string>("Audience");
-            var expiresMinutes = jwtSection.GetValue<int>("ExpiresMinutes");
-
-            var claims = new List<Claim>
+            catch (Exception ex)
             {
-                new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-                new Claim(ClaimTypes.Email, usuario.Email),
-                new Claim(ClaimTypes.Role, usuario.PerfilId.ToString())
-            };
+                _logger.LogError(ex, $"Erro ao tentar autenticar usuário {request.Email}. Motivo: {ex.Message}");
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(expiresMinutes),
-                signingCredentials: credentials
-            );
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-            _logger.LogInformation("Token JWT criado com sucesso.");
-
-            _logger.LogInformation("Usuário autenticado com sucesso.");
-
-            return Ok(new LoginResponse { Token = tokenString, Expires = DateTime.UtcNow.AddMinutes(expiresMinutes) });
+                return BadRequest(new ProblemDetails { Detail = ex.Message });
+            }
         }
     }
 }

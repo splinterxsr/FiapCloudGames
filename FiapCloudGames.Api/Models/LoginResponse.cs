@@ -2,7 +2,7 @@ namespace FiapCloudGames.Api.Models
 {
     public class LoginResponse
     {
-        public string Token { get; set; } = null!;
-        public DateTime Expires { get; set; }
+        public required string Email { get; set; }
+        public required string Token { get; set; }
     }
 }
