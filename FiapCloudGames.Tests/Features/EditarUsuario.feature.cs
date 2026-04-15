@@ -84,7 +84,7 @@ namespace FiapCloudGames.Tests.Features
  await testRunner.GivenAsync("que eu estou autenticado como \"Administrador\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 6
- await testRunner.AndAsync("existe um usuário cadastrado com o ID 2 e e-mail \"original@fiap.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+ await testRunner.AndAsync("existe um usuário cadastrado com ID 2", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
         }
         
@@ -128,28 +128,33 @@ await this.FeatureBackgroundAsync();
                             "novo@fiap.com",
                             "1"});
 #line 9
- await testRunner.WhenAsync("eu solicitar a edição do usuário 2 com os dados:", ((string)(null)), table5, "Quando ");
+ await testRunner.GivenAsync("que eu preencho os dados para editar o usuário 2:", ((string)(null)), table5, "Dado ");
 #line hidden
 #line 12
+ await testRunner.WhenAsync("eu solicitar a edição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line hidden
+#line 13
  await testRunner.ThenAsync("o sistema deve retornar o status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="Erro ao tentar editar usuário inserindo dados inválidos")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Erro ao tentar editar usuário com dados inválidos")]
         [Xunit.TraitAttribute("FeatureTitle", "Editar Usuário")]
-        [Xunit.TraitAttribute("Description", "Erro ao tentar editar usuário inserindo dados inválidos")]
-        [Xunit.InlineDataAttribute("Email", "email_invalido", new string[0])]
-        [Xunit.InlineDataAttribute("Senha", "sfraca", new string[0])]
-        public async System.Threading.Tasks.Task ErroAoTentarEditarUsuarioInserindoDadosInvalidos(string campo, string valor, string[] exampleTags)
+        [Xunit.TraitAttribute("Description", "Erro ao tentar editar usuário com dados inválidos")]
+        [Xunit.InlineDataAttribute("email_invalido", "", "O e-mail inserido é inválido.", new string[0])]
+        [Xunit.InlineDataAttribute("", "123", "A senha precisa ter no mínimo 8 dígitos, contendo números, letras e caracteres es" +
+            "peciais.", new string[0])]
+        public async System.Threading.Tasks.Task ErroAoTentarEditarUsuarioComDadosInvalidos(string email, string senha, string mensagem, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("campo", campo);
-            argumentsOfScenario.Add("valor", valor);
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Erro ao tentar editar usuário inserindo dados inválidos", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 14
+            argumentsOfScenario.Add("email", email);
+            argumentsOfScenario.Add("senha", senha);
+            argumentsOfScenario.Add("mensagem", mensagem);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Erro ao tentar editar usuário com dados inválidos", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -162,11 +167,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 15
- await testRunner.WhenAsync(string.Format("eu solicitar a edição do usuário 2 trocando o \"{0}\" para \"{1}\"", campo, valor), ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
-#line hidden
+                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                            "Email",
+                            "Senha"});
+                table6.AddRow(new string[] {
+                            string.Format("{0}", email),
+                            string.Format("{0}", senha)});
 #line 16
+ await testRunner.GivenAsync("que eu preencho os dados para editar o usuário 2:", ((string)(null)), table6, "Dado ");
+#line hidden
+#line 19
+ await testRunner.WhenAsync("eu solicitar a edição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line hidden
+#line 20
  await testRunner.ThenAsync("o sistema deve retornar o status 400 BadRequest", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
+#line 21
+ await testRunner.AndAsync(string.Format("a resposta deve conter a mensagem de erro \"{0}\"", mensagem), ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -180,40 +197,6 @@ await this.FeatureBackgroundAsync();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Erro ao tentar editar usuário atribuindo e-mail duplicado", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 23
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 4
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 24
- await testRunner.GivenAsync("que existe outro usuário cadastrado com o e-mail \"existente@fiap.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
-#line 25
- await testRunner.WhenAsync("eu solicitar a edição do usuário 2 trocando seu e-mail para \"existente@fiap.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
-#line hidden
-#line 26
- await testRunner.ThenAsync("o sistema deve retornar o status 409 Conflict", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Erro ao tentar editar um usuário que não existe")]
-        [Xunit.TraitAttribute("FeatureTitle", "Editar Usuário")]
-        [Xunit.TraitAttribute("Description", "Erro ao tentar editar um usuário que não existe")]
-        public async System.Threading.Tasks.Task ErroAoTentarEditarUmUsuarioQueNaoExiste()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Erro ao tentar editar um usuário que não existe", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -228,9 +211,61 @@ this.ScenarioInitialize(scenarioInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 29
- await testRunner.WhenAsync("eu solicitar a edição do usuário 999", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.GivenAsync("que já existe um usuário cadastrado com o e-mail \"existente@fiap.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 30
+ await testRunner.AndAsync("que eu preencho os dados para editar o usuário 2 com o e-mail \"existente@fiap.com" +
+                        "\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+#line hidden
+#line 31
+ await testRunner.WhenAsync("eu solicitar a edição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line hidden
+#line 32
+ await testRunner.ThenAsync("o sistema deve retornar o status 409 Conflict", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Erro ao tentar editar um usuário que não existe")]
+        [Xunit.TraitAttribute("FeatureTitle", "Editar Usuário")]
+        [Xunit.TraitAttribute("Description", "Erro ao tentar editar um usuário que não existe")]
+        public async System.Threading.Tasks.Task ErroAoTentarEditarUmUsuarioQueNaoExiste()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Erro ao tentar editar um usuário que não existe", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 34
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 4
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 35
+ await testRunner.GivenAsync("que não existe um usuário cadastrado com ID 999", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+#line hidden
+                global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
+                            "Nome",
+                            "Email",
+                            "PerfilId"});
+                table7.AddRow(new string[] {
+                            "Teste",
+                            "teste@fiap.com",
+                            "1"});
+#line 36
+ await testRunner.AndAsync("que eu preencho os dados para editar o usuário 999:", ((string)(null)), table7, "E ");
+#line hidden
+#line 39
+ await testRunner.WhenAsync("eu solicitar a edição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+#line hidden
+#line 40
  await testRunner.ThenAsync("o sistema deve retornar o status 404 NotFound", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }

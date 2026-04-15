@@ -13,7 +13,7 @@ public class AutenticacaoStepDefinitions
 {
     private readonly HttpClient _client;
     private readonly Mock<IUsuarioRepository> _usuarioRepositoryMock;
-    private readonly SenhaService _senhaServiceMock = new();
+    private readonly SenhaService _senhaService = new();
     private readonly ScenarioContext _scenarioContext;
 
     private LoginRequest _loginRequest;
@@ -29,7 +29,7 @@ public class AutenticacaoStepDefinitions
     [Given("que existe um usuário cadastrado com e-mail {string} e senha {string}")]
     public void GivenQueExisteUmUsuarioCadastradoComE_MailESenha(string email, string senha)
     {
-        var senhaCriptografada = _senhaServiceMock.CriaHash(senha);
+        var senhaCriptografada = _senhaService.CriaHash(senha);
         _usuarioRepositoryMock.Setup(r => r.ObterAsync(email, It.IsAny<CancellationToken>())).ReturnsAsync(new Usuario("Usuário Teste", email, senhaCriptografada, 1));
     }
 

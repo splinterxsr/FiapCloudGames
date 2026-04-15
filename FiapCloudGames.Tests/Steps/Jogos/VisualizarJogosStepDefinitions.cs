@@ -32,8 +32,8 @@ namespace FiapCloudGames.Tests
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
-            [Given("que existe um jogo cadastrado com ID {int} e nome {string}")]
-            public void GivenQueExisteUmJogoCadastradoComIDENome(int id, string nome)
+            [Given("que existe um jogo cadastrado com nome {string} e ID {int}")]
+            public void GivenQueExisteUmJogoCadastradoComIDENome(string nome, int id)
             {
                 var jogoMock = new Jogo(id, nome);
 

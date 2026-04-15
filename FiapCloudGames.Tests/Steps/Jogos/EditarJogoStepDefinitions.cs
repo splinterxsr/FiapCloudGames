@@ -1,26 +1,32 @@
+using FiapCloudGames.Api.Models;
 using Reqnroll;
+using System.Text;
+using System.Text.Json;
 
 namespace FiapCloudGames.Tests.Steps.Jogos
 {
     [Binding]
     public class EditarJogoStepDefinitions
     {
-        [Given("que existe um jogo cadastrado com ID {int}")]
-        public void GivenQueExisteUmJogoCadastradoComID(int p0)
+        private HttpResponseMessage _response;
+        private readonly ScenarioContext _scenarioContext;
+
+        private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
+
+        public EditarJogoStepDefinitions(ScenarioContext scenarioContext)
         {
-            throw new PendingStepException();
+            _scenarioContext = scenarioContext;
         }
 
         [When("eu solicitar a edição do jogo {int} com o nome {string}")]
-        public void WhenEuSolicitarAEdicaoDoJogoComONome(int p0, string p1)
+        public async Task WhenEuSolicitarAEdicaoDoJogoComONomeAsync(int id, string nome)
         {
-            throw new PendingStepException();
-        }
+            var request = new JogoUpdateRequest { Id = id, Nome = nome };
+            var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
-        [Given("que não existe um jogo com ID {int}")]
-        public void GivenQueNaoExisteUmJogoComID(int p0)
-        {
-            throw new PendingStepException();
+            _response = await Client.PostAsync("/jogo/Editar", content);
+
+            _scenarioContext["Response"] = _response;
         }
     }
 }

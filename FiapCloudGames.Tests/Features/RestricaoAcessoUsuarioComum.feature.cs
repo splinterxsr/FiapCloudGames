@@ -89,13 +89,13 @@ namespace FiapCloudGames.Tests.Features
         [Xunit.SkippableTheoryAttribute(DisplayName="Erro ao tentar realizar operação proibida sendo usuário comum")]
         [Xunit.TraitAttribute("FeatureTitle", "Restrição de Acesso")]
         [Xunit.TraitAttribute("Description", "Erro ao tentar realizar operação proibida sendo usuário comum")]
-        [Xunit.InlineDataAttribute("\"listar todos os usuários\"", new string[0])]
-        [Xunit.InlineDataAttribute("\"editar o usuário 2\"", new string[0])]
-        [Xunit.InlineDataAttribute("\"inativar o usuário 2\"", new string[0])]
-        [Xunit.InlineDataAttribute("\"buscar o usuário por ID 2\"", new string[0])]
-        [Xunit.InlineDataAttribute("\"adicionar jogo novo\"", new string[0])]
-        [Xunit.InlineDataAttribute("\"editar o jogo 1\"", new string[0])]
-        [Xunit.InlineDataAttribute("\"inativar o jogo 1\"", new string[0])]
+        [Xunit.InlineDataAttribute("listar todos os usuários", new string[0])]
+        [Xunit.InlineDataAttribute("editar o usuário 2", new string[0])]
+        [Xunit.InlineDataAttribute("inativar o usuário 2", new string[0])]
+        [Xunit.InlineDataAttribute("buscar o usuário por ID 2", new string[0])]
+        [Xunit.InlineDataAttribute("adicionar jogo novo", new string[0])]
+        [Xunit.InlineDataAttribute("editar o jogo 1", new string[0])]
+        [Xunit.InlineDataAttribute("inativar o jogo 1", new string[0])]
         public async System.Threading.Tasks.Task ErroAoTentarRealizarOperacaoProibidaSendoUsuarioComum(string operacao, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
@@ -113,13 +113,13 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 await this.ScenarioStartAsync();
 #line 5
-    await testRunner.GivenAsync("que eu estou autenticado como \"Usuário Comum\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que eu estou autenticado como \"Usuário Comum\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 6
-    await testRunner.WhenAsync(string.Format("eu tentar realizar a operação {0}", operacao), ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync(string.Format("eu tentar realizar a operação {0}", operacao), ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 7
-    await testRunner.ThenAsync("o sistema deve recusar o acesso com o status 403 Forbidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 403 Forbidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

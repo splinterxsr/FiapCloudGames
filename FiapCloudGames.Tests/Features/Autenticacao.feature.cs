@@ -80,9 +80,9 @@ namespace FiapCloudGames.Tests.Features
         public virtual async System.Threading.Tasks.Task FeatureBackgroundAsync()
         {
 #line 7
-  #line hidden
+#line hidden
 #line 8
-    await testRunner.GivenAsync("que existe um usuário cadastrado com e-mail \"usuario@fiap.com\" e senha \"Senha@123" +
+ await testRunner.GivenAsync("que existe um usuário cadastrado com e-mail \"usuario@fiap.com\" e senha \"Senha@123" +
                     "\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
         }
@@ -106,7 +106,7 @@ namespace FiapCloudGames.Tests.Features
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Login com sucesso e geração de token", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 11
-  this.ScenarioInitialize(scenarioInfo);
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -116,19 +116,19 @@ namespace FiapCloudGames.Tests.Features
             {
                 await this.ScenarioStartAsync();
 #line 7
-  await this.FeatureBackgroundAsync();
+await this.FeatureBackgroundAsync();
 #line hidden
 #line 12
-    await testRunner.GivenAsync("que eu informo o e-mail \"usuario@fiap.com\" e a senha \"Senha@123\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que eu informo o e-mail \"usuario@fiap.com\" e a senha \"Senha@123\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 13
-    await testRunner.WhenAsync("eu solicitar o login", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar o login", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 14
-    await testRunner.ThenAsync("o sistema deve retornar o status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
 #line 15
-    await testRunner.AndAsync("deve conter um token JWT válido na resposta", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+ await testRunner.AndAsync("deve conter um token JWT válido na resposta", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -143,7 +143,7 @@ namespace FiapCloudGames.Tests.Features
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Erro ao tentar login com senha incorreta", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 17
-  this.ScenarioInitialize(scenarioInfo);
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -153,16 +153,16 @@ namespace FiapCloudGames.Tests.Features
             {
                 await this.ScenarioStartAsync();
 #line 7
-  await this.FeatureBackgroundAsync();
+await this.FeatureBackgroundAsync();
 #line hidden
 #line 18
-    await testRunner.GivenAsync("que eu informo o e-mail \"usuario@fiap.com\" e a senha \"SenhaErrada!\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que eu informo o e-mail \"usuario@fiap.com\" e a senha \"SenhaErrada!\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 19
-    await testRunner.WhenAsync("eu solicitar o login", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar o login", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 20
-    await testRunner.ThenAsync("o sistema deve retornar o status 401 Unauthorized", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 401 Unauthorized", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -177,7 +177,7 @@ namespace FiapCloudGames.Tests.Features
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Erro ao tentar login com usuário inexistente", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 22
-  this.ScenarioInitialize(scenarioInfo);
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -187,16 +187,16 @@ namespace FiapCloudGames.Tests.Features
             {
                 await this.ScenarioStartAsync();
 #line 7
-  await this.FeatureBackgroundAsync();
+await this.FeatureBackgroundAsync();
 #line hidden
 #line 23
-    await testRunner.GivenAsync("que eu informo o e-mail \"nao_existo@fiap.com\" e a senha \"Senha@123\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que eu informo o e-mail \"nao_existo@fiap.com\" e a senha \"Senha@123\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 24
-    await testRunner.WhenAsync("eu solicitar o login", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar o login", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 25
-    await testRunner.ThenAsync("o sistema deve retornar o status 401 Unauthorized", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 401 Unauthorized", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

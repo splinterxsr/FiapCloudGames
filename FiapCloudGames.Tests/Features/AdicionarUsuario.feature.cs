@@ -81,7 +81,7 @@ namespace FiapCloudGames.Tests.Features
 #line 4
 #line hidden
 #line 5
-    await testRunner.GivenAsync("que eu estou autenticado como \"Administrador\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que eu estou autenticado como \"Administrador\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
         }
         
@@ -127,13 +127,13 @@ await this.FeatureBackgroundAsync();
                             "Teste@123",
                             "1"});
 #line 8
-    await testRunner.GivenAsync("que eu preencho os dados do novo usuário:", ((string)(null)), table3, "Dado ");
+ await testRunner.GivenAsync("que eu preencho os dados do novo usuário:", ((string)(null)), table3, "Dado ");
 #line hidden
 #line 11
-    await testRunner.WhenAsync("eu solicitar a adição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar a adição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 12
-    await testRunner.ThenAsync("o sistema deve retornar o status 201 Created", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 201 Created", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -148,7 +148,7 @@ await this.FeatureBackgroundAsync();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Erro ao tentar adicionar usuário com e-mail já existente", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 14
-    this.ScenarioInitialize(scenarioInfo);
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -161,16 +161,16 @@ await this.FeatureBackgroundAsync();
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 15
-    await testRunner.GivenAsync("que já existe um usuário cadastrado com o e-mail \"duplicado@fiap.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que já existe um usuário cadastrado com o e-mail \"duplicado@fiap.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 16
-    await testRunner.AndAsync("que eu preencho os dados do novo usuário com o e-mail \"duplicado@fiap.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+ await testRunner.AndAsync("que eu preencho os dados do novo usuário com o e-mail \"duplicado@fiap.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
 #line 17
-    await testRunner.WhenAsync("eu solicitar a adição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar a adição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 18
-    await testRunner.ThenAsync("o sistema deve retornar o status 409 Conflict", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 409 Conflict", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -218,16 +218,16 @@ await this.FeatureBackgroundAsync();
                             string.Format("{0}", senha),
                             string.Format("{0}", perfilId)});
 #line 21
-    await testRunner.GivenAsync("que eu tento adicionar um usuário com os seguintes dados:", ((string)(null)), table4, "Dado ");
+ await testRunner.GivenAsync("que eu tento adicionar um usuário com os seguintes dados:", ((string)(null)), table4, "Dado ");
 #line hidden
 #line 24
-    await testRunner.WhenAsync("eu solicitar a adição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar a adição do usuário", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 25
-    await testRunner.ThenAsync("o sistema deve retornar o status 400 BadRequest", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 400 BadRequest", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
 #line 26
-    await testRunner.AndAsync(string.Format("a resposta deve conter a mensagem de erro \"{0}\"", mensagem), ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+ await testRunner.AndAsync(string.Format("a resposta deve conter a mensagem de erro \"{0}\"", mensagem), ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

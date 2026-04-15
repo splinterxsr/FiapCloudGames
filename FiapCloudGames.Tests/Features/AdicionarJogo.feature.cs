@@ -81,7 +81,7 @@ namespace FiapCloudGames.Tests.Features
 #line 4
 #line hidden
 #line 5
-    await testRunner.GivenAsync("que eu estou autenticado como \"Administrador\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que eu estou autenticado como \"Administrador\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
         }
         
@@ -121,13 +121,13 @@ await this.FeatureBackgroundAsync();
                 table1.AddRow(new string[] {
                             "The Wolf Among Us"});
 #line 8
-    await testRunner.GivenAsync("que eu preencho os dados do jogo:", ((string)(null)), table1, "Dado ");
+ await testRunner.GivenAsync("que eu preencho os dados do jogo:", ((string)(null)), table1, "Dado ");
 #line hidden
 #line 11
-    await testRunner.WhenAsync("eu solicitar a adição do jogo", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar a adição do jogo", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 12
-    await testRunner.ThenAsync("o sistema deve retornar o status 201 Created", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 201 Created", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -162,16 +162,16 @@ await this.FeatureBackgroundAsync();
                 table2.AddRow(new string[] {
                             string.Format("{0}", nome)});
 #line 15
-    await testRunner.GivenAsync("que eu tento adicionar um jogo com os seguintes dados:", ((string)(null)), table2, "Dado ");
+ await testRunner.GivenAsync("que eu tento adicionar um jogo com os seguintes dados:", ((string)(null)), table2, "Dado ");
 #line hidden
 #line 18
-    await testRunner.WhenAsync("eu solicitar a adição do jogo", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar a adição do jogo", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 19
-    await testRunner.ThenAsync("o sistema deve retornar o status 400 BadRequest", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 400 BadRequest", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
 #line 20
-    await testRunner.AndAsync(string.Format("a mensagem de erro deve ser \"{0}\"", mensagem), ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
+ await testRunner.AndAsync(string.Format("a mensagem de erro deve ser \"{0}\"", mensagem), ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

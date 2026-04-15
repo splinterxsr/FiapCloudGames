@@ -81,17 +81,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Error()
-    .MinimumLevel.Override(nameof(FiapCloudGames), LogEventLevel.Information)
-    .Enrich.FromLogContext()
-    .WriteTo.File(
-        path: @"C:\Logs\apiFCG\log-.txt",
-        rollingInterval: RollingInterval.Day,
-        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {CorrelationId} {Message:lj}{NewLine}{Exception}")
-    .CreateLogger();
-
-builder.Host.UseSerilog();
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
 
 var app = builder.Build();
 

@@ -101,7 +101,7 @@ namespace FiapCloudGames.Api.Controllers
 
             if (!string.IsNullOrEmpty(request.Email))
             {
-                var usuarioEmailExiste = _usuarioRepository.ObterAsync(request.Email, cancellationToken);
+                var usuarioEmailExiste = await _usuarioRepository.ObterAsync(request.Email, cancellationToken);
 
                 if (usuarioEmailExiste != null && usuarioEmailExiste.Id != request.Id) return Conflict(new { Mensagem = "O e-mail inserido já está atrelado a outro cadastro." });
             }

@@ -81,7 +81,7 @@ namespace FiapCloudGames.Tests.Features
 #line 4
 #line hidden
 #line 5
-    await testRunner.GivenAsync("que eu estou autenticado", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que eu estou autenticado", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
         }
         
@@ -120,13 +120,13 @@ this.ScenarioInitialize(scenarioInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 8
-    await testRunner.GivenAsync("que existe um jogo cadastrado com ID 1 e nome \"The Wolf Among Us\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que existe um jogo cadastrado com nome \"The Wolf Among Us\" e ID 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 9
-    await testRunner.WhenAsync(string.Format("eu solicitar {0}", acao), ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync(string.Format("eu solicitar {0}", acao), ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 10
-    await testRunner.ThenAsync("o sistema deve retornar o status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

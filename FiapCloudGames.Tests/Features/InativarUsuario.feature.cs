@@ -81,7 +81,7 @@ namespace FiapCloudGames.Tests.Features
 #line 4
 #line hidden
 #line 5
-    await testRunner.GivenAsync("que eu estou autenticado como \"Administrador\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que eu estou autenticado como \"Administrador\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
         }
         
@@ -117,13 +117,13 @@ this.ScenarioInitialize(scenarioInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 8
-    await testRunner.GivenAsync("que existe um usuário cadastrado com o ID 2", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que existe um usuário cadastrado com ID 2", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 9
-    await testRunner.WhenAsync("eu solicitar a inativação do usuário 2", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar a inativação do usuário 2", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 10
-    await testRunner.ThenAsync("o sistema deve retornar o status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -151,13 +151,13 @@ this.ScenarioInitialize(scenarioInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 13
-    await testRunner.GivenAsync("que não existe um usuário com o ID 999", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que não existe um usuário cadastrado com ID 999", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 14
-    await testRunner.WhenAsync("eu solicitar a inativação do usuário 999", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
+ await testRunner.WhenAsync("eu solicitar a inativação do usuário 999", ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
 #line 15
-    await testRunner.ThenAsync("o sistema deve retornar o status 404 NotFound", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
+ await testRunner.ThenAsync("o sistema deve retornar o status 404 NotFound", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

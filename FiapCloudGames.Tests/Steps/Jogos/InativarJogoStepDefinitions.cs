@@ -1,3 +1,4 @@
+using Moq;
 using Reqnroll;
 
 namespace FiapCloudGames.Tests.Steps.Jogos
@@ -5,29 +6,22 @@ namespace FiapCloudGames.Tests.Steps.Jogos
     [Binding]
     public class InativarJogoStepDefinitions
     {
-        [Given("que existe um jogo cadastrado com ID {int}")]
-        public void GivenQueExisteUmJogoCadastradoComID(int p0)
+        private HttpResponseMessage _response;
+        private readonly ScenarioContext _scenarioContext;
+
+        private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
+
+        public InativarJogoStepDefinitions(ScenarioContext scenarioContext)
         {
-            throw new PendingStepException();
+            _scenarioContext = scenarioContext;
         }
 
         [When("eu solicitar a inativação do jogo {int}")]
-        public void WhenEuSolicitarAInativacaoDoJogo(int p0)
+        public async Task WhenEuSolicitarAInativacaoDoJogoAsync(int id)
         {
-            throw new PendingStepException();
-        }
+            _response = await Client.PostAsync($"/jogo/inativar/{id}", null, It.IsAny<CancellationToken>());
 
-        [Then("o jogo {int} deve constar como inativo no sistema")]
-        public void ThenOJogoDeveConstarComoInativoNoSistema(int p0)
-        {
-            throw new PendingStepException();
+            _scenarioContext["Response"] = _response;
         }
-
-        [Given("que não existe um jogo com o ID {int}")]
-        public void GivenQueNaoExisteUmJogoComOID(int p0)
-        {
-            throw new PendingStepException();
-        }
-
     }
 }

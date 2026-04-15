@@ -1,3 +1,4 @@
+using Moq;
 using Reqnroll;
 
 namespace FiapCloudGames.Tests.Steps.Usuarios
@@ -5,24 +6,22 @@ namespace FiapCloudGames.Tests.Steps.Usuarios
     [Binding]
     public class InativarUsuarioStepDefinitions
     {
+        private HttpResponseMessage _response;
+        private readonly ScenarioContext _scenarioContext;
 
-        [Given("que existe um usuário cadastrado com o ID {int}")]
-        public void GivenQueExisteUmUsuarioCadastradoComOID(int p0)
+        private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
+
+        public InativarUsuarioStepDefinitions(ScenarioContext scenarioContext)
         {
-            throw new PendingStepException();
+            _scenarioContext = scenarioContext;
         }
 
         [When("eu solicitar a inativação do usuário {int}")]
-        public void WhenEuSolicitarAInativacaoDoUsuario(int p0)
+        public async Task WhenEuSolicitarAInativacaoDoUsuarioAsync(int id)
         {
-            throw new PendingStepException();
-        }
+            _response = await Client.PostAsync($"/usuario/inativar/{id}", null, It.IsAny<CancellationToken>());
 
-        [Given("que não existe um usuário com o ID {int}")]
-        public void GivenQueNaoExisteUmUsuarioComOID(int p0)
-        {
-            throw new PendingStepException();
+            _scenarioContext["Response"] = _response;
         }
-
     }
 }

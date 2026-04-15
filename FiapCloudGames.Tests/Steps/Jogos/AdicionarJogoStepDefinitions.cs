@@ -16,8 +16,8 @@ namespace FiapCloudGames.Tests.Steps.Jogos
         private readonly ScenarioContext _scenarioContext;
         private HttpResponseMessage _response;
 
-
         private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
+
         public AdicionarJogoStepDefinitions(WebAppFactory<Program> factory, ScenarioContext scenarioContext)
         {
             _jogoRepositoryMock = factory.JogoRepositoryMock;
