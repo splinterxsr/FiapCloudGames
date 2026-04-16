@@ -21,6 +21,7 @@ builder.Services.AddDbContext<MySqlContext>(options =>
 
 builder.Services.AddDependencies(builder.Configuration);
 builder.Services.AddJwtSecurity(builder.Configuration);
+builder.Services.AddPolicies();
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<Mapper>();
 builder.Services.AddDocumentation();

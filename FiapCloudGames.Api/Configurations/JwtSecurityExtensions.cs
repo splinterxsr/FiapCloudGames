@@ -1,6 +1,7 @@
 ﻿using FiapCloudGames.Infra.CrossCutting.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace FiapCloudGames.Api.Configurations
@@ -20,7 +21,7 @@ namespace FiapCloudGames.Api.Configurations
             .AddJwtBearer(options =>
             {
                 options.RequireHttpsMetadata = false;
-                options.SaveToken = true;              
+                options.SaveToken = true;
 
                 var bytes = Encoding.UTF8.GetBytes(jwtOptions.Key);
                 var symmetricSecurityKey = new SymmetricSecurityKey(bytes);
@@ -33,7 +34,8 @@ namespace FiapCloudGames.Api.Configurations
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
                     ValidateAudience = false,
-                    ValidateLifetime = true
+                    ValidateLifetime = true,
+                    RoleClaimType = ClaimTypes.Role
                 };
 
                 options.Events = new JwtBearerEvents

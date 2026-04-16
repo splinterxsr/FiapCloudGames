@@ -39,8 +39,8 @@ namespace FiapCloudGames.Infra.Data.Mappings
 
             builder
                 .HasData(
-                    new Perfil(1, "Administrador"),
-                    new Perfil(2, "Usuário")
+                    new Perfil(1, nameof(Policy.Administrador)),
+                    new Perfil(2, nameof(Policy.Usuario))
                 );
         }
     }

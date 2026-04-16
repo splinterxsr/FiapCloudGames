@@ -1,6 +1,8 @@
 ﻿using FiapCloudGames.Api.Models;
 using FiapCloudGames.Api.Profiles;
+using FiapCloudGames.Domain.Entities;
 using FiapCloudGames.Domain.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FiapCloudGames.Api.Controllers
@@ -20,6 +22,7 @@ namespace FiapCloudGames.Api.Controllers
             _logger = logger;
         }
 
+        [Authorize(Policy = nameof(Policy.Todos))]
         [HttpGet("ObterTodos")]
         [ProducesResponseType(typeof(IEnumerable<JogoResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Obter(CancellationToken cancellationToken)
@@ -31,6 +34,7 @@ namespace FiapCloudGames.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize(Policy = nameof(Policy.Todos))]
         [HttpGet("ObterPorId/{id}")]
         [ProducesResponseType(typeof(JogoResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -45,6 +49,7 @@ namespace FiapCloudGames.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize(Policy = nameof(Policy.Administrador))]
         [HttpPost("Adicionar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -61,6 +66,7 @@ namespace FiapCloudGames.Api.Controllers
             return Created(string.Empty, jogo);
         }
 
+        [Authorize(Policy = nameof(Policy.Administrador))]
         [HttpPost("Editar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -82,6 +88,7 @@ namespace FiapCloudGames.Api.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = nameof(Policy.Administrador))]
         [HttpPost("Inativar/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

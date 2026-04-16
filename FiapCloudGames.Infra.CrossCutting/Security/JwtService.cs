@@ -15,13 +15,14 @@ namespace FiapCloudGames.Infra.CrossCutting.Security
             _jwtOptions = jwtOptions;
         }
 
-        public string GerarToken(string email, string nome)
+        public string GerarToken(string email, string nome, string perfilNome)
         {
             var claimsIdentity = new ClaimsIdentity(
                 [
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.UniqueName, email),
-                    new Claim(ClaimTypes.Actor, nome)
+                    new Claim(ClaimTypes.Actor, nome),
+                    new Claim(ClaimTypes.Role, perfilNome)
                 ]
             );
 

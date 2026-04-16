@@ -1,11 +1,14 @@
 ﻿using FiapCloudGames.Api.Models;
 using FiapCloudGames.Api.Profiles;
+using FiapCloudGames.Domain.Entities;
 using FiapCloudGames.Domain.Repositories;
 using FiapCloudGames.Domain.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FiapCloudGames.Api.Controllers
 {
+    [Authorize(Policy = nameof(Policy.Administrador))]
     [ApiController]
     [Route("[controller]")]
     public class UsuarioController : ControllerBase

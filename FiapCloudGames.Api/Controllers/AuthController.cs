@@ -35,7 +35,7 @@ namespace FiapCloudGames.Api.Controllers
             {
                 var usuario = await _usuarioService.Autenticar(request.Email, request.Senha, cancellationToken);
 
-                var token = _jwtService.GerarToken(usuario.Email, usuario.Nome);
+                var token = _jwtService.GerarToken(usuario.Email, usuario.Nome, usuario.Perfil!.Nome);
 
                 var loginResponse = new LoginResponse { Email = usuario.Email, Token = token };
 
