@@ -8,7 +8,6 @@ namespace FiapCloudGames.Tests.Steps.Usuarios
     [Binding]
     public class RestricaoDeAcessoStepDefinitions
     {
-        private HttpResponseMessage _response;
         private readonly ScenarioContext _scenarioContext;
 
         public RestricaoDeAcessoStepDefinitions(ScenarioContext scenarioContext)
@@ -18,7 +17,7 @@ namespace FiapCloudGames.Tests.Steps.Usuarios
 
         private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
 
-        private record ApiOperation(HttpMethod Method, string Path, object? DefaultBody = null);
+        private record ApiOperation(HttpMethod Method, string Path, object DefaultBody = null);
 
         private static readonly Dictionary<string, ApiOperation> operacoes = new()
         {
