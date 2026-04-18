@@ -5,6 +5,7 @@ using FiapCloudGames.Domain.Repositories;
 using FiapCloudGames.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace FiapCloudGames.Api.Controllers
 {
@@ -29,6 +30,8 @@ namespace FiapCloudGames.Api.Controllers
 
         [HttpGet("ObterTodos")]
         [ProducesResponseType(typeof(IEnumerable<UsuarioResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Obter uma lista com todos os usuários.")]
         public async Task<IActionResult> Obter(CancellationToken cancellationToken)
         {
             var usuarios = await _usuarioRepository.ObterAsync(cancellationToken);
@@ -40,7 +43,9 @@ namespace FiapCloudGames.Api.Controllers
 
         [HttpGet("ObterPorId/{id}")]
         [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(Summary = "Obter um usuário pelo ID.")]
         public async Task<IActionResult> Obter([FromRoute] int id, CancellationToken cancellationToken)
         {
             var usuario = await _usuarioRepository.ObterAsync(id, cancellationToken);
@@ -54,7 +59,9 @@ namespace FiapCloudGames.Api.Controllers
 
         [HttpGet("ObterPorEmail/{email}")]
         [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(Summary = "Obter um usuário pelo e-mail.")]
         public async Task<IActionResult> Obter([FromRoute] string email, CancellationToken cancellationToken)
         {
             var usuario = await _usuarioRepository.ObterAsync(email, cancellationToken);
@@ -69,6 +76,8 @@ namespace FiapCloudGames.Api.Controllers
         [HttpPost("Adicionar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Adicionar um novo usuário.")]
         public async Task<IActionResult> Adicionar([FromBody] UsuarioInsertRequest request, CancellationToken cancellationToken)
         {
             var usuarioExiste = await _usuarioRepository.ObterAsync(request.Email, cancellationToken);
@@ -93,7 +102,9 @@ namespace FiapCloudGames.Api.Controllers
         [HttpPost("Editar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(Summary = "Editar um usuário existente.")]
         public async Task<IActionResult> Editar([FromBody] UsuarioUpdateRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Iniciando edição do usuário '{request.Nome}' (ID: {request.Id}).");
@@ -122,7 +133,9 @@ namespace FiapCloudGames.Api.Controllers
 
         [HttpPost("Inativar/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(Summary = "Inativar um usuário existente.")]
         public async Task<IActionResult> Inativar([FromRoute] int id, CancellationToken cancellationToken)
         {
             var usuario = await _usuarioRepository.ObterAsync(id, cancellationToken);

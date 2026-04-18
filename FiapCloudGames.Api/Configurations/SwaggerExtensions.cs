@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using FiapCloudGames.Api.Documentation;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace FiapCloudGames.Api.Configurations
 {
@@ -10,6 +12,8 @@ namespace FiapCloudGames.Api.Configurations
 
             services.AddSwaggerGen(options =>
             {
+                options.EnableAnnotations();
+                options.ExampleFilters();
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
@@ -34,13 +38,16 @@ namespace FiapCloudGames.Api.Configurations
                 });
             });
 
+            services.AddSwaggerExamplesFromAssemblyOf<LoginRequestExample>();
+            services.AddSwaggerExamplesFromAssemblyOf<LoginResponseExample>();
+
             return services;
         }
 
         public static IApplicationBuilder UseDocumentation(this IApplicationBuilder app)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API v1"));
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Fiap Cloud Games v1"));
 
             return app;
         }

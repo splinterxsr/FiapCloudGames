@@ -1,3 +1,4 @@
+using FiapCloudGames.Api.Documentation;
 using FiapCloudGames.Api.Models;
 using FiapCloudGames.Domain.Exceptions;
 using FiapCloudGames.Domain.Services;
@@ -5,6 +6,7 @@ using FiapCloudGames.Infra.CrossCutting.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace FiapCloudGames.Api.Controllers
 {
@@ -25,9 +27,11 @@ namespace FiapCloudGames.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login")]
-        [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerRequestExample(typeof(LoginRequest), typeof(LoginRequestExample))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(LoginResponseExample))]
         [SwaggerOperation(Summary = "Realizar a autenticação e obter token de acesso.")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
         {
@@ -47,7 +51,7 @@ namespace FiapCloudGames.Api.Controllers
             {
                 _logger.LogInformation($"Usuário {request.Email} sem permissão de acesso. Acesso bloqueado. Motivo: {ex.Message}");
 
-                return Unauthorized(new ProblemDetails { Detail = ex.Message });
+                return Unauthorized();
             }
             catch (Exception ex)
             {

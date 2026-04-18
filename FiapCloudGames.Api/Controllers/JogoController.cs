@@ -4,6 +4,7 @@ using FiapCloudGames.Domain.Entities;
 using FiapCloudGames.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace FiapCloudGames.Api.Controllers
 {
@@ -25,6 +26,8 @@ namespace FiapCloudGames.Api.Controllers
         [Authorize(Policy = nameof(Policy.Todos))]
         [HttpGet("ObterTodos")]
         [ProducesResponseType(typeof(IEnumerable<JogoResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Obter uma lista com todos os jogos.")]
         public async Task<IActionResult> Obter(CancellationToken cancellationToken)
         {
             var jogos = await _jogoRepository.ObterAsync(cancellationToken);
@@ -37,7 +40,9 @@ namespace FiapCloudGames.Api.Controllers
         [Authorize(Policy = nameof(Policy.Todos))]
         [HttpGet("ObterPorId/{id}")]
         [ProducesResponseType(typeof(JogoResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(Summary = "Obter um jogo específico pelo seu ID.")]
         public async Task<IActionResult> Obter([FromRoute] int id, CancellationToken cancellationToken)
         {
             var jogo = await _jogoRepository.ObterAsync(id, cancellationToken);
@@ -53,6 +58,8 @@ namespace FiapCloudGames.Api.Controllers
         [HttpPost("Adicionar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation(Summary = "Adicionar um novo jogo.")]
         public async Task<IActionResult> Adicionar([FromBody] JogoInsertRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Adicionando novo jogo '{request.Nome}'.");
@@ -70,7 +77,9 @@ namespace FiapCloudGames.Api.Controllers
         [HttpPost("Editar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(Summary = "Editar um jogo existente.")]
         public async Task<IActionResult> Editar([FromBody] JogoUpdateRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Iniciando edição do jogo '{request.Nome}' (ID: {request.Id}).");
@@ -91,7 +100,9 @@ namespace FiapCloudGames.Api.Controllers
         [Authorize(Policy = nameof(Policy.Administrador))]
         [HttpPost("Inativar/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(Summary = "Inativar um jogo existente.")]
         public async Task<IActionResult> Inativar([FromRoute] int id, CancellationToken cancellationToken)
         {
             var jogo = await _jogoRepository.ObterAsync(id, cancellationToken);

@@ -10,7 +10,7 @@ namespace FiapCloudGames.Api.Configurations
     {
         public static IServiceCollection AddJwtSecurity(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>() ?? throw new Exception("JwtOptioñs não encontrado."); ;
+            var jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>() ?? throw new Exception("JwtOptions não encontrado."); ;
 
             services
             .AddAuthentication(options =>
