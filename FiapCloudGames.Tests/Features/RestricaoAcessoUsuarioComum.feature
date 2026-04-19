@@ -2,7 +2,7 @@
 Funcionalidade: Restrição de Acesso
 
 Esquema do Cenário: Erro ao tentar realizar operação proibida sendo usuário comum
-	Dado que eu estou autenticado como "Usuário Comum"
+	Dado que eu estou autenticado como "Usuario"
 	Quando eu tentar realizar a operação <operacao>
 	Então o sistema deve retornar o status 403 Forbidden
 

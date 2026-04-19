@@ -1,29 +1,25 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using FiapCloudGames.Infra.CrossCutting.Security;
+using FiapCloudGames.Tests.Support;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 public static class TokenGenerator
 {
-    public static string GenerateToken(string perfilId)
+    private static readonly JwtService _jwtService;
+
+    static TokenGenerator()
     {
-        var claims = new[] {
-            new Claim(ClaimTypes.NameIdentifier, "UsuarioTeste"),
-            new Claim(ClaimTypes.Email, "teste@fiap.com"),
-            new Claim(ClaimTypes.Role, perfilId)
-        };
+        var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+        var options = config.GetSection(nameof(JwtOptions)).Get<JwtOptions>();
+        var jwtOptions = Options.Create(options);
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SubstituaPorUmaChaveSecretaMuitoForteEArmazeneEmSegredo"));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        _jwtService = new JwtService(jwtOptions);
+    }
 
-        var token = new JwtSecurityToken(
-            issuer: "FiapCloudGames",
-            audience: "FiapCloudGames",
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
-            signingCredentials: creds
-        );
+    public static string GenerateToken(int perfilId)
+    {
+        var perfil = (EnumPerfil)perfilId;
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return _jwtService.GerarToken("email.teste@fiap.com", "Usuário Teste", perfil.ToString());
     }
 }

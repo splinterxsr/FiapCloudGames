@@ -113,7 +113,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 await this.ScenarioStartAsync();
 #line 5
- await testRunner.GivenAsync("que eu estou autenticado como \"Usuário Comum\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+ await testRunner.GivenAsync("que eu estou autenticado como \"Usuario\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
 #line 6
  await testRunner.WhenAsync(string.Format("eu tentar realizar a operação {0}", operacao), ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");

@@ -1,5 +1,4 @@
 using Reqnroll;
-using System.Net.Http.Headers;
 using Moq;
 using FiapCloudGames.Domain.Entities;
 using FiapCloudGames.Tests.Factory;
@@ -13,23 +12,16 @@ namespace FiapCloudGames.Tests
         [Binding]
         public class VisualizarJogosStepDefinitions
         {
-            private readonly HttpClient _client;
             private readonly Mock<IJogoRepository> _jogoRepositoryMock;
             private readonly ScenarioContext _scenarioContext;
             private HttpResponseMessage _response;
 
+            private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
+
             public VisualizarJogosStepDefinitions(WebAppFactory<Program> factory, ScenarioContext scenarioContext)
             {
                 _jogoRepositoryMock = factory.JogoRepositoryMock;
-                _client = factory.CreateClient();
                 _scenarioContext = scenarioContext;
-            }
-
-            [Given("que eu estou autenticado")]
-            public void GivenQueEuEstouAutenticado()
-            {
-                var token = TokenGenerator.GenerateToken("1");
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
             [Given("que existe um jogo cadastrado com nome {string} e ID {int}")]
@@ -51,8 +43,8 @@ namespace FiapCloudGames.Tests
             {
                 var acaoIncluiId = Regex.Match(acao, @"\d+");
 
-                if (acaoIncluiId.Success) _response = await _client.GetAsync($"/jogo/ObterPorId/{acaoIncluiId.Value}");
-                else _response = await _client.GetAsync("/jogo/ObterTodos");
+                if (acaoIncluiId.Success) _response = await Client.GetAsync($"/jogo/ObterPorId/{acaoIncluiId.Value}");
+                else _response = await Client.GetAsync("/jogo/ObterTodos");
 
                 _scenarioContext["Response"] = _response;
             }

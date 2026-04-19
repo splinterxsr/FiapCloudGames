@@ -18,10 +18,10 @@ namespace FiapCloudGames.Tests.Factory
             builder.ConfigureTestServices(services =>
             {
                 services.RemoveAll<IUsuarioRepository>();
-                services.RemoveAll<IUsuarioRepository>();
+                services.RemoveAll<IJogoRepository>();
 
-                services.AddSingleton<IUsuarioRepository>(UsuarioRepositoryMock.Object);
-                services.AddSingleton<IJogoRepository>(JogoRepositoryMock.Object);
+                services.AddSingleton(UsuarioRepositoryMock.Object);
+                services.AddSingleton(JogoRepositoryMock.Object);
             });
         }
     }

@@ -10,12 +10,12 @@ namespace FiapCloudGames.Tests.Steps.Usuarios
     {
         private readonly ScenarioContext _scenarioContext;
 
+        private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
+
         public RestricaoDeAcessoStepDefinitions(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
-
-        private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
 
         private record ApiOperation(HttpMethod Method, string Path, object DefaultBody = null);
 

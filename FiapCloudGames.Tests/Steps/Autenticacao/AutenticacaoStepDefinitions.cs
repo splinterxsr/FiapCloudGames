@@ -1,8 +1,9 @@
 using FiapCloudGames.Api.Models;
-using FiapCloudGames.Domain.Entities;
 using FiapCloudGames.Domain.Repositories;
 using FiapCloudGames.Infra.Data.Services;
 using FiapCloudGames.Tests.Factory;
+using FiapCloudGames.Tests.Support;
+using FiapCloudGames.Tests.Support.TestDouble;
 using Moq;
 using Reqnroll;
 using System.Text;
@@ -29,8 +30,10 @@ public class AutenticacaoStepDefinitions
     [Given("que existe um usuário cadastrado com e-mail {string} e senha {string}")]
     public void GivenQueExisteUmUsuarioCadastradoComE_MailESenha(string email, string senha)
     {
-        var senhaCriptografada = _senhaService.CriaHash(senha);
-        _usuarioRepositoryMock.Setup(r => r.ObterAsync(email, It.IsAny<CancellationToken>())).ReturnsAsync(new Usuario("Usuário Teste", email, senhaCriptografada, 1));
+        var usuario = new UsuarioTesteAuth("Teste", email, _senhaService.CriaHash(senha), 1);
+        usuario.DefinirSituacaoEPerfil('A', EnumPerfil.Administrador);
+
+        _usuarioRepositoryMock.Setup(r => r.ObterAsync(email, It.IsAny<CancellationToken>())).ReturnsAsync(usuario);
     }
 
     [Given("que eu informo o e-mail {string} e a senha {string}")]

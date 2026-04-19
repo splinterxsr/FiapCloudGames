@@ -14,14 +14,13 @@ namespace FiapCloudGames.Tests.Steps.Usuarios
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly Mock<IUsuarioRepository> _usuarioRepositoryMock;
+        private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
 
         public AdicionarUsuarioStepDefinitions(WebAppFactory<Program> factory, ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
             _usuarioRepositoryMock = factory.UsuarioRepositoryMock;
         }
-
-        private HttpClient Client => _scenarioContext.Get<HttpClient>("HttpClient");
 
         [Given("que eu preencho os dados do novo usuário:")]
         [Given("que eu tento adicionar um usuário com os seguintes dados:")]
@@ -35,7 +34,7 @@ namespace FiapCloudGames.Tests.Steps.Usuarios
                 Nome = row.ContainsKey("Nome") ? row["Nome"] : string.Empty,
                 Email = email,
                 Senha = row["Senha"],
-                PerfilId = (row["PerfilId"] == "null")? null : int.Parse(row["PerfilId"])
+                PerfilId = (row["PerfilId"] == "null") ? null : int.Parse(row["PerfilId"])
             };
 
             _usuarioRepositoryMock

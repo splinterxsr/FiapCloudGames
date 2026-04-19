@@ -76,15 +76,6 @@ namespace FiapCloudGames.Tests.Features
             await testRunner.CollectScenarioErrorsAsync();
         }
         
-        public virtual async System.Threading.Tasks.Task FeatureBackgroundAsync()
-        {
-#line 4
-#line hidden
-#line 5
- await testRunner.GivenAsync("que eu estou autenticado", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
-#line hidden
-        }
-        
         async System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
         {
             await this.TestInitializeAsync();
@@ -95,18 +86,21 @@ namespace FiapCloudGames.Tests.Features
             await this.TestTearDownAsync();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="Usuário visualiza informações dos jogos")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Usuário e Administrador visualizam informações dos jogos")]
         [Xunit.TraitAttribute("FeatureTitle", "Visualizar Jogos")]
-        [Xunit.TraitAttribute("Description", "Usuário visualiza informações dos jogos")]
-        [Xunit.InlineDataAttribute("a lista de todos os jogos", new string[0])]
-        [Xunit.InlineDataAttribute("os detalhes do jogo 1", new string[0])]
-        public async System.Threading.Tasks.Task UsuarioVisualizaInformacoesDosJogos(string acao, string[] exampleTags)
+        [Xunit.TraitAttribute("Description", "Usuário e Administrador visualizam informações dos jogos")]
+        [Xunit.InlineDataAttribute("Usuario", "a lista de todos os jogos", new string[0])]
+        [Xunit.InlineDataAttribute("Usuario", "os detalhes do jogo 1", new string[0])]
+        [Xunit.InlineDataAttribute("Administrador", "a lista de todos os jogos", new string[0])]
+        [Xunit.InlineDataAttribute("Administrador", "os detalhes do jogo 1", new string[0])]
+        public async System.Threading.Tasks.Task UsuarioEAdministradorVisualizamInformacoesDosJogos(string perfil, string acao, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("perfil", perfil);
             argumentsOfScenario.Add("acao", acao);
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Usuário visualiza informações dos jogos", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Usuário e Administrador visualizam informações dos jogos", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -116,16 +110,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 4
-await this.FeatureBackgroundAsync();
+#line 5
+ await testRunner.GivenAsync(string.Format("que eu estou autenticado como \"{0}\"", perfil), ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
 #line hidden
-#line 8
- await testRunner.GivenAsync("que existe um jogo cadastrado com nome \"The Wolf Among Us\" e ID 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "Dado ");
+#line 6
+ await testRunner.AndAsync("que existe um jogo cadastrado com nome \"The Wolf Among Us\" e ID 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "E ");
 #line hidden
-#line 9
+#line 7
  await testRunner.WhenAsync(string.Format("eu solicitar {0}", acao), ((string)(null)), ((global::Reqnroll.Table)(null)), "Quando ");
 #line hidden
-#line 10
+#line 8
  await testRunner.ThenAsync("o sistema deve retornar o status 200 OK", ((string)(null)), ((global::Reqnroll.Table)(null)), "Então ");
 #line hidden
             }

@@ -2,10 +2,9 @@
 using FiapCloudGames.Domain.Repositories;
 using FiapCloudGames.Infra.Data.Services;
 using FiapCloudGames.Tests.Factory;
-using Microsoft.AspNetCore.Http.Timeouts;
+using FiapCloudGames.Tests.Support;
 using Moq;
 using Reqnroll;
-using System.ComponentModel;
 using System.Net.Http.Headers;
 
 namespace FiapCloudGames.Tests
@@ -33,7 +32,8 @@ namespace FiapCloudGames.Tests
         [Given("que eu estou autenticado como {string}")]
         public void GivenQueEuEstouAutenticadoComo(string perfil)
         {
-            var perfilId = perfil == "Administrador" ? "1" : "2";
+            var perfilEnum = (EnumPerfil)Enum.Parse(typeof(EnumPerfil), perfil);
+            var perfilId = (int)perfilEnum;
 
             var token = TokenGenerator.GenerateToken(perfilId);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
