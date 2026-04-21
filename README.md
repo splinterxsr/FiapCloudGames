@@ -33,15 +33,15 @@ Siga os passos abaixo para rodar o projeto localmente:
 ```bash
 git clone https://github.com/splinterxsr/FiapCloudGames.git
 ```
-### 2. Criar o banco de dados
+### 2. Crie o banco de dados
 ```
 CREATE DATABASE fiapcloud;
 ```
-### 3. Criar o usuário admin
+### 3. Crie o usuário admin
 ```
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
 ```
-### 4. Atribuir permissão ao usuário admin
+### 4. Atribua permissão ao usuário admin
 ```
 GRANT ALL PRIVILEGES ON fiapcloud.* TO 'admin'@'localhost';
 ```
