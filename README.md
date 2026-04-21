@@ -17,6 +17,8 @@ Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 
 * .NET 8.0
 * Entity Framework Core
+* Reqnroll (BDD)
+* xUnit
 * MariaDB (MySQL)
 
 ## ⚙️ Pré-requisitos
